@@ -1,6 +1,8 @@
 package com.app.apiarchi.controller;
 
-import com.app.apiarchi.service.HelloRestService;
+import com.app.apiarchi.repository.ProductRepositoryImpl;
+import com.app.apiarchi.service.HelloService;
+import com.app.apiarchi.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,18 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/api")
-public class HelloRestController {
-    private HelloRestService helloRestService;
+public class HelloController {
+    private HelloService helloService;
 
     @Autowired
-    public HelloRestController(HelloRestService helloRestService) {
-        this.helloRestService = helloRestService;
+    public HelloController(HelloService helloService) {
+        var notificationService = new NotificationService();
+        var productRepository = new ProductRepositoryImpl();
+        this.helloService = helloService;
     }
     @GetMapping("/hello")
     public ResponseEntity get() {
         try{
             //logging
-            return helloRestService.ok();
+            return helloService.greeting("ultraman");
         } catch (RuntimeException e) {
             return ResponseEntity.internalServerError().build();
         }
